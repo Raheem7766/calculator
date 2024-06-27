@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculator</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            height: 100vh;
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            margin: 0;
+        }
+
+        h2 {
+            font-size: 30px;
+            font-weight: 700;
+        }
+
+        .cal {
+            width: 100%;
+            max-width: 350px;
+            background-color: #2d2d2d;
+            border-radius: 15px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .output {
+            width: 100%;
+            height: 60px;
+            line-height: 60px;
+            background-color: #fff;
+            color: #000;
+            font-size: 2em;
+            text-align: right;
+            font-family: 'Courier New', Courier, monospace;
+            padding: 0 10px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .row {
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+        }
+
+        .btn {
+            width: 50px;
+            height: 50px;
+            background-color: #fff;
+            color: #000;
+            border-radius: 50%;
+            font-size: 1.5em;
+            cursor: pointer;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            transition: background-color 0.3s, color 0.3s, transform 0.3s;
+        }
+
+        .btn:hover {
+            background-color: #007bff;
+            color: #fff;
+            transform: scale(1.1);
+        }
+
+        .btn:active {
+            background-color: #0056b3;
+            transform: scale(1);
+        }
+
+        .equal {
+            width: calc(100% - 10px);
+            background-color: #28a745;
+            color: #fff;
+            border-radius: 15px;
+        }
+
+        .equal:hover {
+            background-color: #218838;
+        }
+
+        .equal:active {
+            background-color: #1e7e34;
+        }
+
+        /* Media Queries for Responsiveness */
+        @media (max-width: 768px) {
+            .output {
+                font-size: 1.5em;
+                height: 50px;
+                line-height: 50px;
+            }
+
+            .btn {
+                width: 45px;
+                height: 45px;
+                font-size: 1.3em;
+            }
+
+            .equal {
+                width: 100%;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .output {
+                font-size: 1.2em;
+                height: 40px;
+                line-height: 40px;
+            }
+
+            .btn {
+                width: 40px;
+                height: 40px;
+                font-size: 1.2em;
+            }
+
+            .cal {
+                width: 75%;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <h2>Calculator</h2>
+    <div class="cal"></div>
+</body>
+
+<script>
+    let cal = document.querySelector('.cal')
+    let myKeys = [['1', '2', '3', '+'], ['4', '5', '6', '-'], ['7', '8', '9', '*'], ['C', '0', '=', '/']]
+    let myOper = ['+', '-', '*', '/']
+    let myOutput
+
+    document.addEventListener('DOMContentLoaded', function () {
+        myOutput = document.createElement('div')
+        myOutput.innerHTML = '0'
+        myOutput.classList.add('output')
+        cal.append(myOutput)
+        for (let x = 0; x < myKeys.length; x++) {
+            let div = document.createElement('div')
+            div.classList.add('row')
+            cal.append(div)
+            console.log(div, myOutput);
+
+            for (let y = 0; y < myKeys[x].length; y++) {
+                let btn = document.createElement('div')
+                btn.innerHTML = myKeys[x][y]
+                btn.classList.add('btn')
+                div.append(btn)
+                console.log(myKeys[x][y]);
+                btn.addEventListener('click', btnHit)
+            }
+        }
+    })
+    function btnHit(e) {
+        let myValue = this.innerHTML
+        let mycal = myOutput.innerHTML
+
+        console.log(myValue, "My value", mycal, "My calc")
+
+        if (mycal == '0') {
+            mycal = ''
+        }
+        if (myValue == '=') {
+            mycal = eval(mycal)
+            console.log(mycal, "hello");
+        }
+        ////////////////////////////////////////////
+
+        else {
+            let lastChar = mycal.substring(mycal.length - 1)
+            console.log(lastChar, "Last Character")
+
+            if (myOper.includes(myValue)) {
+                if (myOper.includes(lastChar)) {
+                    mycal = mycal.substring(0, mycal.length - 1)
+                }
+                else {
+                    mycal = eval(mycal)
+                }
+            }
+            mycal = mycal + myValue
+            console.log(mycal, "My calculation")
+        }
+        if (myValue == 'C') {
+            mycal = 0
+            location.reload()
+        }
+        myOutput.innerHTML = mycal
+
+    }
+</script>
+
+</html>
